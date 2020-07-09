@@ -28,7 +28,7 @@ enum blake3_flags {
 #define INLINE static inline __attribute__((always_inline))
 #endif
 
-#if defined(__x86_64__) || defined(_M_X64) 
+#if defined(__x86_64__) || defined(_M_X64)
 #define IS_X86
 #define IS_X86_64
 #endif
@@ -104,7 +104,7 @@ static unsigned int highest_one(uint64_t x) {
 
 // Count the number of 1 bits.
 INLINE unsigned int popcnt(uint64_t x) {
-#if defined(__GNUC__) || defined(__clang__)
+#if !defined __TRUSTINSOFT_ANALYZER__ && (defined(__GNUC__) || defined(__clang__))
   return __builtin_popcountll(x);
 #else
   unsigned int count = 0;
@@ -117,7 +117,7 @@ INLINE unsigned int popcnt(uint64_t x) {
 }
 
 // Largest power of two less than or equal to x. As a special case, returns 1
-// when x is 0. 
+// when x is 0.
 INLINE uint64_t round_down_to_power_of_2(uint64_t x) {
   return 1ULL << highest_one(x | 1);
 }
