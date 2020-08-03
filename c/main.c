@@ -70,6 +70,10 @@ enum cpu_feature {
 extern enum cpu_feature g_cpu_features;
 enum cpu_feature get_cpu_features();
 
+#ifdef __TRUSTINSOFT_ANALYZER__
+extern FILE *fp_output;
+#endif
+
 int main(int argc, char **argv) {
   size_t out_len = BLAKE3_OUT_LEN;
   uint8_t key[BLAKE3_KEY_LEN];
@@ -107,10 +111,10 @@ int main(int argc, char **argv) {
     argv += 2;
   }
 
-  /* 
+  /*
    * We're going to hash the input multiple times, so we need to buffer it all.
    * This is just for test cases, so go ahead and assume that the input is less
-   * than 1 MiB. 
+   * than 1 MiB.
    */
   size_t buf_capacity = 1 << 20;
   uint8_t *buf = malloc(buf_capacity);
@@ -128,7 +132,7 @@ int main(int argc, char **argv) {
   const int mask = get_cpu_features();
   int feature = 0;
   do {
-    fprintf(stderr, "Testing 0x%08X\n", feature);
+    // fprintf(stderr, "Testing 0x%08X\n", feature);
     g_cpu_features = feature;
     blake3_hasher hasher;
     switch (mode) {
@@ -155,9 +159,15 @@ int main(int argc, char **argv) {
     }
     blake3_hasher_finalize(&hasher, out, out_len);
     for (size_t i = 0; i < out_len; i++) {
-      printf("%02x", out[i]);
+      printf("%02x", (unsigned int) out[i]);
+    #ifdef __TRUSTINSOFT_ANALYZER__
+      fprintf(fp_output, "%02x", (unsigned int) out[i]);
+    #endif
     }
     printf("\n");
+  #ifdef __TRUSTINSOFT_ANALYZER__
+    fprintf(fp_output, "\n");
+  #endif
     free(out);
     feature = (feature - mask) & mask;
   } while (feature != 0);
