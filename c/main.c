@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
   const int mask = get_cpu_features();
   int feature = 0;
   do {
-    // fprintf(stderr, "Testing 0x%08X\n", feature);
+    fprintf(stderr, "Testing 0x%08X\n", feature);
     g_cpu_features = feature;
     blake3_hasher hasher;
     switch (mode) {

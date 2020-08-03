@@ -7,27 +7,34 @@ FILE *fp_output;
 int main(int argc, char **argv);
 
 int main_wrapper(int argc, char **argv) {
+  /* 1. Prepare the output file. */
   fp_output = fopen("output", "w+");
 
+  /* 2. Run the main test function and remember the return value. */
   int main_retval = main(argc, argv);
 
-  rewind(fp_output);
-
+  /* 3. Check if the actual test output and the expected output are the same. */
   FILE *fp_expected = fopen("expected", "r");
   int c_output, c_expected;
+  rewind(fp_output);
 
   printf("Checking the output.");
   while (1) {
     c_output = fgetc(fp_output);
+    /* If the end of the test output is reached, stop. */
     if (c_output == EOF)
       break;
+    /* Each line of the test output should be compared with the same single line
+       of the expected output. */
     if (c_output == '\n') {
       rewind(fp_expected);
-      printf("Next.");
+      printf("Next line.");
       continue;
     }
     c_expected = fgetc(fp_expected);
-    //@ assert c_expected == c_output;
+    /* Each character read from the test output should be the same as
+       the character read from the expected output. */
+    /*@ assert c_expected == c_output; */
     printf("output = %c, expected = %c", c_output, c_expected);
   };
   printf("Done.");
@@ -35,6 +42,7 @@ int main_wrapper(int argc, char **argv) {
   fclose(fp_expected);
   fclose(fp_output);
 
-  //@ assert main_retval == 0;
+  /* 4. Finish up: return the main test function's return value. */
+  /*@ assert main_retval == 0; */
   return main_retval;
 }

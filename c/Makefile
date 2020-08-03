@@ -49,7 +49,6 @@ blake3_neon.o: blake3_neon.c
 test: CFLAGS += -DBLAKE3_TESTING -fsanitize=address,undefined
 test: all
 	./test.py
-	./gen_tis.config.py
 
 asm: blake3.c blake3_dispatch.c blake3_portable.c main.c $(ASM_TARGETS)
 	$(CC) $(CFLAGS) $(EXTRAFLAGS) $^ -o $(NAME)
