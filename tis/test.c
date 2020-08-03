@@ -25,7 +25,7 @@ int main_wrapper(int argc, char **argv) {
       continue;
     }
     c_expected = fgetc(fp_expected);
-    //@ assert UB: c_expected == c_output;
+    //@ assert c_expected == c_output;
     printf("output = %c, expected = %c", c_output, c_expected);
   };
   printf("Done.");
@@ -33,6 +33,6 @@ int main_wrapper(int argc, char **argv) {
   fclose(fp_expected);
   fclose(fp_output);
 
-  //@ assert UB: main_retval == 0;
+  //@ assert main_retval == 0;
   return main_retval;
 }

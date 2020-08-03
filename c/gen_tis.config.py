@@ -99,14 +99,11 @@ def write_test_vector_file_binary(test_no, name, content):
     file.close()
 
 def main():
-    tis_config_file = open("tis.config_test.py", "w")
+    tis_config_file = open("test.py_tis.config", "w")
     tis_config_file.write("[")
 
     test_no = 0
     for case in TEST_VECTORS["cases"]:
-        if test_no > 4:
-            break
-
         if test_no > 0:
             tis_config_file.write(",\n")
         else:
