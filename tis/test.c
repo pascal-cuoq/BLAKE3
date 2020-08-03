@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#define TIS_TEST
+
 FILE *fp_output;
 
 int main(int argc, char **argv);

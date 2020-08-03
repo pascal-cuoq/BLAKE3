@@ -70,7 +70,7 @@ enum cpu_feature {
 extern enum cpu_feature g_cpu_features;
 enum cpu_feature get_cpu_features();
 
-#ifdef __TRUSTINSOFT_ANALYZER__
+#if defined (__TRUSTINSOFT_ANALYZER__) && defined (TIS_TEST)
 extern FILE *fp_output;
 #endif
 
@@ -160,12 +160,12 @@ int main(int argc, char **argv) {
     blake3_hasher_finalize(&hasher, out, out_len);
     for (size_t i = 0; i < out_len; i++) {
       printf("%02x", (unsigned int) out[i]);
-    #ifdef __TRUSTINSOFT_ANALYZER__
+    #if defined (__TRUSTINSOFT_ANALYZER__) && defined (TIS_TEST)
       fprintf(fp_output, "%02x", (unsigned int) out[i]);
     #endif
     }
     printf("\n");
-  #ifdef __TRUSTINSOFT_ANALYZER__
+  #if defined (__TRUSTINSOFT_ANALYZER__) && defined (TIS_TEST)
     fprintf(fp_output, "\n");
   #endif
     free(out);
