@@ -592,6 +592,8 @@ void blake3_hasher_finalize_seek(const blake3_hasher *self, uint64_t seek,
     uint8_t parent_block[BLAKE3_BLOCK_LEN];
     memcpy(parent_block, &self->cv_stack[cvs_remaining * 32], 32);
     output_chaining_value(&output, &parent_block[32]);
+    for (int i = 0; i < 8; i++)
+      parent_block[i] = __builtin_bswap32(parent_block[i]);
     output = parent_output(parent_block, self->key, self->chunk.flags);
   }
   output_root_bytes(&output, seek, out, out_len);
