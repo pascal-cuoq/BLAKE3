@@ -595,8 +595,12 @@ void blake3_hasher_finalize_seek(const blake3_hasher *self, uint64_t seek,
     tis_show_each_parent_block(
                                parent_block[0], parent_block[1], parent_block[2], parent_block[3],
                                parent_block[32], parent_block[33], parent_block[34], parent_block[35]);
-    for (int i = 0; i < 8; i++) {
-      uint32_t word = parent_block[i];
+    for (int i = 0; i < 16; i++) {
+      uint32_t word = ((uint32_t*)parent_block)[i];
+      parent_block[4*i] = (uint8_t)word;
+      parent_block[4*i+1] = (uint8_t)(word>>8);
+      parent_block[4*i+2] = (uint8_t)(word>>16);
+      parent_block[4*i+3] = (uint8_t)(word>>24);
     }
     output = parent_output(parent_block, self->key, self->chunk.flags);
   }
