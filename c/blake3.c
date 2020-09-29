@@ -592,6 +592,7 @@ void blake3_hasher_finalize_seek(const blake3_hasher *self, uint64_t seek,
     uint8_t parent_block[BLAKE3_BLOCK_LEN];
     memcpy(parent_block, &self->cv_stack[cvs_remaining * 32], 32);
     output_chaining_value(&output, &parent_block[32]);
+    tis_show_each_parent_block(parent_block);
     for (int i = 0; i < 8; i++) {
       uint32_t word = parent_block[i];
     }
